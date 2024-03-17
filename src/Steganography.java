@@ -24,14 +24,17 @@ public class Steganography {
         for (int i = 0; i < text.length(); i++){
             StringBuilder helper = new StringBuilder(Integer.toBinaryString(text.charAt(i)));
             //Поддерживание длинны равной 7 добавлением несущих нулуй
-            if(helper.length()<7){
-                for (int j = 1; j <= 7-helper.length(); j++)
+            int helperLen = helper.length();
+            if(helper.length()<14){
+                for (int j = 1; j <= 14-helperLen; j++)
                     helper = helper.insert(0,"0");
             }
             binaryText = binaryText.append(helper);
         }
-        System.out.println(binaryText);
-        System.out.println(binaryText.length());
+        if(binaryText.length()>image.getWidth()-10){
+            ErrorsFunction("Слишком большое сообщение");
+            return null;
+        }
 
         StringBuilder binaryLength = new StringBuilder(Integer.toBinaryString(binaryText.length()));
         int help = 31-binaryLength.length();
@@ -197,14 +200,14 @@ public class Steganography {
 
 
         cipheredStr = new StringBuilder(cipheredStr.substring(0,strLength));
-        System.out.println(cipheredStr);
-        System.out.println(cipheredStr.length());
 
-        for (int i = 0; i < cipheredStr.length(); i+=7) {
-            if(i+7>strLength)
+
+        for (int i = 0; i < cipheredStr.length(); i+=14) {
+            if(i+14>strLength)
                 break;
-            str = str.append((char) Integer.parseInt(cipheredStr.substring(i,i+7),2));
+            str = str.append((char) Integer.parseInt(cipheredStr.substring(i,i+14),2));
         }
+        System.out.println(str);
         return String.valueOf(str);
     }
     static int round(int a, int b){
@@ -213,5 +216,8 @@ public class Steganography {
         else
             return a/b+1;
 
+    }
+    public void ErrorsFunction(String error){
+        JOptionPane.showMessageDialog(null,error, "Error",JOptionPane.ERROR_MESSAGE);
     }
 }

@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 
 public class DecipherWindow implements ActionListener {
 
-    private JFrame cipherWindow = new JFrame();
+    private JFrame decipherWindow = new JFrame();
     private JTextArea textArea = new JTextArea();
     private JButton select = new JButton("Select");
     private JButton decipherButton = new JButton("Decipher");
@@ -16,13 +16,14 @@ public class DecipherWindow implements ActionListener {
     private BufferedImage image = null;
 
     public DecipherWindow(){
-        cipherWindow.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        cipherWindow.setBounds(35,45,1120,720);
-        cipherWindow.setMinimumSize(new Dimension(1120,720));
-        cipherWindow.setLayout(null);
+        decipherWindow.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        decipherWindow.setBounds(35,45,1120,720);
+        decipherWindow.setMinimumSize(new Dimension(1120,720));
+        decipherWindow.setLayout(null);
+        decipherWindow.getContentPane().setBackground(new Color(0xD107EF));
 
-        textArea.setMinimumSize(new Dimension(930,40));
-        textArea.setBounds(10,600,930, 40);
+        textArea.setMinimumSize(new Dimension(880,40));
+        textArea.setBounds(10,600,880, 40);
         textArea.setFocusable(false);
 
         select.addActionListener(this);
@@ -40,12 +41,12 @@ public class DecipherWindow implements ActionListener {
         label.setOpaque(true);
         panel.add(label);
 
-        cipherWindow.add(panel);
-        cipherWindow.add(textArea);
-        cipherWindow.add(select);
-        cipherWindow.add(decipherButton);
-        cipherWindow.pack();
-        cipherWindow.setVisible(true);
+        decipherWindow.add(panel);
+        decipherWindow.add(textArea);
+        decipherWindow.add(select);
+        decipherWindow.add(decipherButton);
+        decipherWindow.pack();
+        decipherWindow.setVisible(true);
 
 
 
@@ -62,7 +63,7 @@ public class DecipherWindow implements ActionListener {
                     image = ImageIO.read(chooser.getSelectedFile());
                     label.removeAll();
                     label.setIcon(new ImageIcon(image));
-                    cipherWindow.repaint();
+                    decipherWindow.repaint();
                 }
             } catch (Exception ex) {
                 ErrorsFunction(ex.getMessage());
@@ -77,7 +78,7 @@ public class DecipherWindow implements ActionListener {
             }else {
                 Steganography st = new Steganography(image);
                 textArea.append(st.decipher());
-                cipherWindow.repaint();
+                decipherWindow.repaint();
             }
 
 

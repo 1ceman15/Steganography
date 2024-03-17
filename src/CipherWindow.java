@@ -22,6 +22,7 @@ public class CipherWindow implements ActionListener {
         cipherWindow.setBounds(35,45,1120,720);
         cipherWindow.setMinimumSize(new Dimension(1120,720));
         cipherWindow.setLayout(null);
+        cipherWindow.getContentPane().setBackground(new Color(0xD107EF));
 
         textField.setMinimumSize(new Dimension(900,40));
         textField.setBounds(10,600,900, 40);
