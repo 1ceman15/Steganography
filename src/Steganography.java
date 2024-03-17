@@ -21,7 +21,7 @@ public class Steganography {
 
         StringBuilder binaryText = new StringBuilder("");
 
-        for (int i = 0; i < text.length(); i++) {
+        for (int i = 0; i < text.length(); i++){
             StringBuilder helper = new StringBuilder(Integer.toBinaryString(text.charAt(i)));
             //Поддерживание длинны равной 7 добавлением несущих нулуй
             if(helper.length()<7){
@@ -30,6 +30,8 @@ public class Steganography {
             }
             binaryText = binaryText.append(helper);
         }
+        System.out.println(binaryText);
+        System.out.println(binaryText.length());
 
         StringBuilder binaryLength = new StringBuilder(Integer.toBinaryString(binaryText.length()));
         int help = 31-binaryLength.length();
@@ -46,8 +48,6 @@ public class Steganography {
             int pixelColor = image.getRGB(i, 0) & 0x00FFFFFF;
 
 
-
-
             int red = (pixelColor >> 16) & 0xFF;
             int green = (pixelColor >> 8) & 0xFF;
             int blue = pixelColor & 0xFF;
@@ -61,8 +61,6 @@ public class Steganography {
             }
 
             //char[] pixel = Integer.toBinaryString(pixelColor).toCharArray();
-            System.out.println(pixel.length);
-            System.out.println(pixelColor);
             pixel[7] = binaryLength.charAt(index);
             index++;
 
@@ -85,11 +83,12 @@ public class Steganography {
             pixelColor = Integer.parseInt(String.copyValueOf(pixel),2);
             index++;
             image.setRGB(i,0, pixelColor);
+            //System.out.println("pa"+ pixelColor);
 
         }
 
         index = 0;
-        for (int i = 11; i <= round(binaryText.length(),3); i++) {
+        for (int i = 11; i <= 11+ round(binaryText.length(),3); i++) {
             if(index>=binaryText.length()-1)
                 break;
 
@@ -112,7 +111,7 @@ public class Steganography {
             pixel[7] = binaryText.charAt(index);
             index++;
 
-            if(index>=binaryText.length()-1) {
+            if(index>binaryText.length()-1) {
                 pixelColor = Integer.parseInt(String.copyValueOf(pixel),2);
                 image.setRGB(i,0, pixelColor);
                 break;
@@ -121,7 +120,7 @@ public class Steganography {
             pixel[15] = binaryText.charAt(index);
             index++;
 
-            if(index>=binaryText.length()-1) {
+            if(index>binaryText.length()-1) {
                 pixelColor = Integer.parseInt(String.copyValueOf(pixel),2);
                 image.setRGB(i,0, pixelColor);
                 break;
@@ -138,6 +137,75 @@ public class Steganography {
 
         return  image;
 
+    }
+    public String decipher(){
+        StringBuilder cipheredStr = new StringBuilder("");
+        StringBuilder str = new StringBuilder("");
+        StringBuilder binaryLength = new StringBuilder("");
+
+        //Нахождение длинны зашифрованного сообщения
+        for (int i = 0; i < 11; i++) {
+            int pixelColor = image.getRGB(i, 0) & 0x00FFFFFF;
+
+            //System.out.println("pX" + pixelColor);
+
+            int red = (pixelColor >> 16) & 0xFF;
+            int green = (pixelColor >> 8) & 0xFF;
+            int blue = pixelColor & 0xFF;
+
+            char[] pixel = new char[24];
+
+            for (int j = 0; j < 8; j++) {
+                pixel[j] = (red & (1 << (7 - j))) == 0 ? '0' : '1';
+                pixel[j + 8] = (green & (1 << (7 - j))) == 0 ? '0' : '1';
+                pixel[j + 16] = (blue & (1 << (7 - j))) == 0 ? '0' : '1';
+            }
+            binaryLength.append(pixel[7]);
+            binaryLength.append(pixel[15]);
+            binaryLength.append(pixel[23]);
+        }
+
+        binaryLength = new StringBuilder(binaryLength.substring(0,31));
+        int strLength = Integer.parseInt(String.valueOf(binaryLength),2);
+
+        int pixelCount = round(strLength,3);
+        int pixelIndex = 11;
+        int index = 0;
+        while (index<=strLength){
+
+            int pixelColor = image.getRGB(pixelIndex, 0) & 0x00FFFFFF;
+            //System.out.println("pixel1 " +  pixelColor);
+            int red = (pixelColor >> 16) & 0xFF;
+            int green = (pixelColor >> 8) & 0xFF;
+            int blue = pixelColor & 0xFF;
+
+            char[] pixel = new char[24];
+
+            for (int j = 0; j < 8; j++) {
+                pixel[j] = (red & (1 << (7 - j))) == 0 ? '0' : '1';
+                pixel[j + 8] = (green & (1 << (7 - j))) == 0 ? '0' : '1';
+                pixel[j + 16] = (blue & (1 << (7 - j))) == 0 ? '0' : '1';
+            }
+            cipheredStr = cipheredStr.append(pixel[7]);
+            index++;
+            cipheredStr = cipheredStr.append(pixel[15]);
+            index++;
+            cipheredStr = cipheredStr.append(pixel[23]);
+            index++;
+            pixelIndex++;
+        }
+
+
+        cipheredStr = new StringBuilder(cipheredStr.substring(0,strLength));
+        System.out.println(cipheredStr);
+        System.out.println(cipheredStr.length());
+
+        for (int i = 0; i < cipheredStr.length(); i+=7) {
+            if(i+7>strLength)
+                break;
+            str = str.append((char) Integer.parseInt(cipheredStr.substring(i,i+7),2));
+        }
+        return String.valueOf(str);
     }
     static int round(int a, int b){
         if(a%b==0)

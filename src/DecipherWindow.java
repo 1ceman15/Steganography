@@ -13,7 +13,7 @@ public class DecipherWindow implements ActionListener {
     private JButton decipherButton = new JButton("Decipher");
     private JPanel panel = new JPanel();
     private JLabel label = new JLabel();
-    private BufferedImage image;
+    private BufferedImage image = null;
 
     public DecipherWindow(){
         cipherWindow.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -21,15 +21,16 @@ public class DecipherWindow implements ActionListener {
         cipherWindow.setMinimumSize(new Dimension(1120,720));
         cipherWindow.setLayout(null);
 
-        textArea.setMinimumSize(new Dimension(980,40));
-        textArea.setBounds(10,600,900, 40);
+        textArea.setMinimumSize(new Dimension(930,40));
+        textArea.setBounds(10,600,930, 40);
         textArea.setFocusable(false);
 
         select.addActionListener(this);
-        select.setBounds(920,600,75,40);
-        select.setBounds(1005,600,75,40);
+        select.setBounds(920,600,80,40);
+        select.setBounds(1005,600,80,40);
 
-        decipherButton.setBounds(910,600,85,40);
+        decipherButton.setBounds(900,600,95,40);
+        decipherButton.addActionListener(this);
 
         panel.setBounds(0,0,480,270);
         panel.setBackground(Color.BLACK);
@@ -62,13 +63,27 @@ public class DecipherWindow implements ActionListener {
                     label.removeAll();
                     label.setIcon(new ImageIcon(image));
                     cipherWindow.repaint();
-
                 }
             } catch (Exception ex) {
                 ErrorsFunction(ex.getMessage());
             }
 
         }
+
+
+        if(e.getSource()==decipherButton){
+            if(image == null) {
+                ErrorsFunction("Картинка не выбрана");
+            }else {
+                Steganography st = new Steganography(image);
+                textArea.append(st.decipher());
+                cipherWindow.repaint();
+            }
+
+
+        }
+
+
     }
 
 

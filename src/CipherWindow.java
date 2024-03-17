@@ -77,9 +77,8 @@ public class CipherWindow implements ActionListener {
                 Steganography st = new Steganography(image,textField.getText());
                 image = st.cipher();
                 try {
-                    File outputFile = new File("C:\\Java Projects\\Steganography\\Data\\output.jpg");
-                    ImageIO.write(image, "jpg", outputFile);
-                    System.out.println("cj[hfybk");
+                    File outputFile = new File("C:\\Java Projects\\Steganography\\Data\\output.png");
+                    ImageIO.write(image, "png", outputFile);
                 }catch (Exception ex){
                     ErrorsFunction(ex.getMessage());
                 }
