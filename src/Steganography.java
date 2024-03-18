@@ -32,7 +32,7 @@ public class Steganography {
             binaryText = binaryText.append(helper);
         }
         if(binaryText.length()>image.getWidth()-10){
-            ErrorsFunction("Слишком большое сообщение");
+            Errors.ErrorsFunction("Слишком большое сообщение");
             return null;
         }
 
@@ -92,7 +92,7 @@ public class Steganography {
 
         index = 0;
         for (int i = 11; i <= 11+ round(binaryText.length(),3); i++) {
-            if(index>=binaryText.length()-1)
+            if(index>binaryText.length()-1)
                 break;
 
             int pixelColor = image.getRGB(i, 0) & 0x00FFFFFF;
@@ -217,7 +217,5 @@ public class Steganography {
             return a/b+1;
 
     }
-    public void ErrorsFunction(String error){
-        JOptionPane.showMessageDialog(null,error, "Error",JOptionPane.ERROR_MESSAGE);
-    }
+
 }

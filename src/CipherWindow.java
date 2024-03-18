@@ -22,7 +22,7 @@ public class CipherWindow implements ActionListener {
         cipherWindow.setBounds(35,45,1120,720);
         cipherWindow.setMinimumSize(new Dimension(1120,720));
         cipherWindow.setLayout(null);
-        cipherWindow.getContentPane().setBackground(new Color(0xD107EF));
+        cipherWindow.getContentPane().setBackground(new Color(0x8400FF));
 
         textField.setMinimumSize(new Dimension(900,40));
         textField.setBounds(10,600,900, 40);
@@ -34,12 +34,11 @@ public class CipherWindow implements ActionListener {
         cipherButton.setBounds(920,600,75,40);
         cipherButton.addActionListener(this);
 
+
         panel.setBounds(0,0,480,270);
         panel.setBackground(Color.BLACK);
-        panel.setOpaque(false);
         panel.setBounds(10,0,1070,590);
         panel.setOpaque(true);
-        label.setOpaque(true);
         panel.add(label);
 
         cipherWindow.add(panel);
@@ -68,21 +67,17 @@ public class CipherWindow implements ActionListener {
 
                 }
             } catch (Exception ex) {
-                ErrorsFunction(ex.getMessage());
+                Errors.ErrorsFunction(ex.getMessage());
             }
         }
         if(e.getSource()==cipherButton){
             if(image == null){
-                ErrorsFunction("Картинка не выбрана");
+                Errors.ErrorsFunction("Картинка не выбрана");
             }else {
                 Steganography st = new Steganography(image,textField.getText());
                 image = st.cipher();
-                try {
-                    File outputFile = new File("C:\\Java Projects\\Steganography\\Data\\output.png");
-                    ImageIO.write(image, "png", outputFile);
-                }catch (Exception ex){
-                    ErrorsFunction(ex.getMessage());
-                }
+
+                SaveWindow.save(image);
 
                 label.removeAll();
                 label.setIcon(new ImageIcon(image));
@@ -95,7 +90,5 @@ public class CipherWindow implements ActionListener {
     }
 
 
-    public void ErrorsFunction(String error){
-        JOptionPane.showMessageDialog(null,error, "Error",JOptionPane.ERROR_MESSAGE);
-    }
+
 }

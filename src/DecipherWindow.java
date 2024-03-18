@@ -20,7 +20,7 @@ public class DecipherWindow implements ActionListener {
         decipherWindow.setBounds(35,45,1120,720);
         decipherWindow.setMinimumSize(new Dimension(1120,720));
         decipherWindow.setLayout(null);
-        decipherWindow.getContentPane().setBackground(new Color(0xD107EF));
+        decipherWindow.getContentPane().setBackground(new Color(0x8400FF));
 
         textArea.setMinimumSize(new Dimension(880,40));
         textArea.setBounds(10,600,880, 40);
@@ -66,7 +66,7 @@ public class DecipherWindow implements ActionListener {
                     decipherWindow.repaint();
                 }
             } catch (Exception ex) {
-                ErrorsFunction(ex.getMessage());
+                Errors.ErrorsFunction(ex.getMessage());
             }
 
         }
@@ -74,7 +74,7 @@ public class DecipherWindow implements ActionListener {
 
         if(e.getSource()==decipherButton){
             if(image == null) {
-                ErrorsFunction("Картинка не выбрана");
+                Errors.ErrorsFunction("Картинка не выбрана");
             }else {
                 Steganography st = new Steganography(image);
                 textArea.append(st.decipher());
@@ -87,10 +87,6 @@ public class DecipherWindow implements ActionListener {
 
     }
 
-
-    public void ErrorsFunction(String error){
-        JOptionPane.showMessageDialog(null,error, "Error",JOptionPane.ERROR_MESSAGE);
-    }
 
 
 }
