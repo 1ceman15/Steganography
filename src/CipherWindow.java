@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
+
 
 public class CipherWindow implements ActionListener {
 
@@ -16,6 +16,7 @@ public class CipherWindow implements ActionListener {
     private JPanel panel = new JPanel();
     private JLabel label = new JLabel();
     private BufferedImage image = null;
+    private BufferedImage cipheredImage = null;
 
     public CipherWindow(){
         cipherWindow.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -75,14 +76,13 @@ public class CipherWindow implements ActionListener {
                 Errors.ErrorsFunction("Картинка не выбрана");
             }else {
                 Steganography st = new Steganography(image,textField.getText());
-                image = st.cipher();
-
-                SaveWindow.save(image);
-
-                label.removeAll();
-                label.setIcon(new ImageIcon(image));
-                cipherWindow.repaint();
-
+                cipheredImage = st.cipher();
+                if(cipheredImage!=null) {
+                    SaveWindow.save(cipheredImage);
+                    label.removeAll();
+                    label.setIcon(new ImageIcon(cipheredImage));
+                    cipherWindow.repaint();
+                }
             }
 
 

@@ -17,12 +17,12 @@ public class Menu implements ActionListener {
         cipher.addActionListener(this);
         cipher.setFont(new Font("Comic Sans", Font.BOLD, 50));
         cipher.setFocusable(false);
-        cipher.setBackground(new Color(0x8400FF));
+        cipher.setBackground(new Color(0x3897E7));
 
         decipher.addActionListener(this);
         decipher.setFont(new Font("Comic Sans", Font.BOLD, 50));
         decipher.setFocusable(false);
-        decipher.setBackground(new Color(0x8400FF));
+        decipher.setBackground(new Color(0x3897E7));
 
 
         menu.add(cipher);

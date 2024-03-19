@@ -1,8 +1,5 @@
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
+
 
 public class Steganography {
     BufferedImage image;
@@ -19,11 +16,11 @@ public class Steganography {
 
     public BufferedImage cipher(){
 
-        StringBuilder binaryText = new StringBuilder("");
+        StringBuilder binaryText = new StringBuilder("");//Текст в виде двоичного кода
 
         for (int i = 0; i < text.length(); i++){
             StringBuilder helper = new StringBuilder(Integer.toBinaryString(text.charAt(i)));
-            //Поддерживание длинны равной 7 добавлением несущих нулуй
+            //Поддерживание длинны равной 14 добавлением несущих нулуй
             int helperLen = helper.length();
             if(helper.length()<14){
                 for (int j = 1; j <= 14-helperLen; j++)
@@ -31,7 +28,7 @@ public class Steganography {
             }
             binaryText = binaryText.append(helper);
         }
-        if(binaryText.length()>image.getWidth()-10){
+        if(binaryText.length()/3>image.getWidth()-10){
             Errors.ErrorsFunction("Слишком большое сообщение");
             return null;
         }
@@ -207,7 +204,7 @@ public class Steganography {
                 break;
             str = str.append((char) Integer.parseInt(cipheredStr.substring(i,i+14),2));
         }
-        System.out.println(str);
+
         return String.valueOf(str);
     }
     static int round(int a, int b){
