@@ -28,20 +28,20 @@ public class Steganography {
             }
             binaryText = binaryText.append(helper);
         }
-        if(binaryText.length()/3>image.getWidth()-10){
+        if(binaryText.length()/3>image.getWidth()-11){
             Errors.ErrorsFunction("Слишком большое сообщение");
             return null;
         }
 
         StringBuilder binaryLength = new StringBuilder(Integer.toBinaryString(binaryText.length()));
-        int help = 31-binaryLength.length();
+        int help = binaryLength.length();//Длинна закодированного сообщения
         if(binaryLength.length()<31){
-            for (int j = 1; j <= help; j++)
+            for (int j = 1; j <= 31 - help; j++)
                 binaryLength = binaryLength.insert(0,"0");
         }
 
         //В первых 11 пикселях будет закодированна длинна
-        int index = 0;
+        int index = 0;//Хранит индекс символа в длинне закодированного сообщения
         for (int i = 0; i < 11; i++) {
             if(index>=31)
                 break;
@@ -60,7 +60,6 @@ public class Steganography {
                 pixel[j + 16] = (blue & (1 << (7 - j))) == 0 ? '0' : '1';
             }
 
-            //char[] pixel = Integer.toBinaryString(pixelColor).toCharArray();
             pixel[7] = binaryLength.charAt(index);
             index++;
 
@@ -83,7 +82,6 @@ public class Steganography {
             pixelColor = Integer.parseInt(String.copyValueOf(pixel),2);
             index++;
             image.setRGB(i,0, pixelColor);
-            //System.out.println("pa"+ pixelColor);
 
         }
 
@@ -147,8 +145,6 @@ public class Steganography {
         for (int i = 0; i < 11; i++) {
             int pixelColor = image.getRGB(i, 0) & 0x00FFFFFF;
 
-            //System.out.println("pX" + pixelColor);
-
             int red = (pixelColor >> 16) & 0xFF;
             int green = (pixelColor >> 8) & 0xFF;
             int blue = pixelColor & 0xFF;
@@ -168,13 +164,11 @@ public class Steganography {
         binaryLength = new StringBuilder(binaryLength.substring(0,31));
         int strLength = Integer.parseInt(String.valueOf(binaryLength),2);
 
-        int pixelCount = round(strLength,3);
         int pixelIndex = 11;
         int index = 0;
         while (index<=strLength){
 
             int pixelColor = image.getRGB(pixelIndex, 0) & 0x00FFFFFF;
-            //System.out.println("pixel1 " +  pixelColor);
             int red = (pixelColor >> 16) & 0xFF;
             int green = (pixelColor >> 8) & 0xFF;
             int blue = pixelColor & 0xFF;
@@ -196,7 +190,7 @@ public class Steganography {
         }
 
 
-        cipheredStr = new StringBuilder(cipheredStr.substring(0,strLength));
+        cipheredStr = new StringBuilder(cipheredStr.substring(0,strLength));//Обрезка закодированного сообщения до нужной длинны
 
 
         for (int i = 0; i < cipheredStr.length(); i+=14) {

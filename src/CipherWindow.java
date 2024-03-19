@@ -83,6 +83,7 @@ public class CipherWindow implements ActionListener {
                     label.setIcon(new ImageIcon(cipheredImage));
                     cipherWindow.repaint();
                 }
+
             }
 
 
