@@ -73,10 +73,9 @@ public class CipherWindow implements ActionListener {
         }
         if(e.getSource()==cipherButton){
             if(image == null){
-                Errors.ErrorsFunction("Картинка не выбрана");
+                Errors.ErrorsFunction("Фотография не выбрана");
             }else {
-                Steganography st = new Steganography(image,textField.getText());
-                cipheredImage = st.cipher();
+                cipheredImage = Steganography.cipher(textField.getText(), image);
                 if(cipheredImage!=null) {
                     SaveWindow.save(cipheredImage);
                     label.removeAll();

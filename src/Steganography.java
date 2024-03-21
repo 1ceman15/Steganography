@@ -1,33 +1,11 @@
 import java.awt.image.BufferedImage;
 
-
 public class Steganography {
-    BufferedImage image;
-    StringBuilder text = new StringBuilder("");
+    public static BufferedImage cipher(String text, BufferedImage image){
 
-    public Steganography(BufferedImage image){
-        this.image = image;
-    }
+        StringBuilder binaryText = TextToBinary(text);//Текст в виде двоичного кода
 
-    public Steganography(BufferedImage image, String text){
-        this.image = image;
-        this.text = new StringBuilder(text);
-    }
 
-    public BufferedImage cipher(){
-
-        StringBuilder binaryText = new StringBuilder("");//Текст в виде двоичного кода
-
-        for (int i = 0; i < text.length(); i++){
-            StringBuilder helper = new StringBuilder(Integer.toBinaryString(text.charAt(i)));
-            //Поддерживание длинны равной 14 добавлением несущих нулуй
-            int helperLen = helper.length();
-            if(helper.length()<14){
-                for (int j = 1; j <= 14-helperLen; j++)
-                    helper = helper.insert(0,"0");
-            }
-            binaryText = binaryText.append(helper);
-        }
         if(binaryText.length()/3>image.getWidth()-11){
             Errors.ErrorsFunction("Слишком большое сообщение");
             return null;
@@ -136,7 +114,7 @@ public class Steganography {
         return  image;
 
     }
-    public String decipher(){
+    public static String decipher(BufferedImage image){
         StringBuilder cipheredStr = new StringBuilder("");
         StringBuilder str = new StringBuilder("");
         StringBuilder binaryLength = new StringBuilder("");
@@ -189,18 +167,40 @@ public class Steganography {
             pixelIndex++;
         }
 
-
         cipheredStr = new StringBuilder(cipheredStr.substring(0,strLength));//Обрезка закодированного сообщения до нужной длинны
 
+        return BinaryToText(cipheredStr);
+    }
 
-        for (int i = 0; i < cipheredStr.length(); i+=14) {
-            if(i+14>strLength)
-                break;
-            str = str.append((char) Integer.parseInt(cipheredStr.substring(i,i+14),2));
+    private static StringBuilder TextToBinary(String text){
+
+        StringBuilder binaryText = new StringBuilder("");//Текст в виде двоичного кода
+
+        for (int i = 0; i < text.length(); i++){
+            StringBuilder helper = new StringBuilder(Integer.toBinaryString(text.charAt(i)));
+            //Поддерживание длинны равной 14 добавлением несущих нулей
+            int helperLen = helper.length();
+            if(helper.length()<14){
+                for (int j = 1; j <= 14-helperLen; j++)
+                    helper = helper.insert(0,"0");
+            }
+            binaryText = binaryText.append(helper);
         }
 
-        return String.valueOf(str);
+        return binaryText;
     }
+
+    private static String BinaryToText(StringBuilder cipheredText){
+        StringBuilder text = new StringBuilder("");
+        for (int i = 0; i < cipheredText.length(); i+=14) {
+            if(i+14>cipheredText.length())
+                break;
+            text = text.append((char) Integer.parseInt(cipheredText.substring(i,i+14),2));
+        }
+        return String.valueOf(text);
+    }
+
+
     static int round(int a, int b){
         if(a%b==0)
             return a/b;

@@ -25,6 +25,7 @@ public class DecipherWindow implements ActionListener {
         textArea.setMinimumSize(new Dimension(880,40));
         textArea.setBounds(10,600,880, 40);
         textArea.setFocusable(false);
+        textArea.setFont(new Font("Comic Sans", Font.BOLD, 25));
 
         select.addActionListener(this);
         select.setBounds(920,600,80,40);
@@ -76,8 +77,8 @@ public class DecipherWindow implements ActionListener {
             if(image == null) {
                 Errors.ErrorsFunction("Картинка не выбрана");
             }else {
-                Steganography st = new Steganography(image);
-                textArea.append(st.decipher());
+                textArea.setText("");
+                textArea.append(Steganography.decipher(image));
                 decipherWindow.repaint();
             }
 
